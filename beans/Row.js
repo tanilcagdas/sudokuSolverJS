@@ -1,16 +1,9 @@
-//public class Row extends Group {
-var group;
+class Row extends Group {
+    constructor(sudoku, index) {
 
-var Row;
-Row = function (sudoku, index) {
-    //super(sudoku, index);
-    group = new Group(sudoku, index);
+        super(sudoku, index)
+    }
 }
-
-function getGroup(){
-    return this.group;
-}
-
 
 
 

@@ -118,10 +118,10 @@
 				var cell;
 
                 var row = rowArray[rowIndex];
-                var group = row.getGroup();
+                var group = row.group;
                 cell = group[columnIndex];
-				columnArray[columnIndex].getGroup()[rowIndex]= cell;
-				cell.setColumn(columnArray[columnIndex]);
+				columnArray[columnIndex].group[rowIndex]= cell;
+				cell.column = columnArray[columnIndex];
 
 			}
 		}
