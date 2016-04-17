@@ -1,19 +1,19 @@
 
 
-//public class ThreeByThreeSquare extends Group {
 
 
-	var group;
+class ThreeByThreeSquare extends Group {
+	constructor(sudoku, index) {
 
-
-    var ThreeByThreeSquare;
-	 ThreeByThreeSquare = function ( sudoku, index) {
-		group = new Group(sudoku, index);
+		super(sudoku, index)
 	}
-
-	function toString() {
+	 toString() {
 		// TODO Auto-generated method stub
 		return group.toString();
 	}
+}
+
+
+
 
 

@@ -1,235 +1,308 @@
 
-	
-	 var rowArray= [];
-	 var columnArray= [];
-	 var threeByThreeArray= [];
-	 var solved=false;
-	 var HowManyCellsLeft=81;
-	 var puzzleId;
-	 var puzzleLevel;
-	 var sudokuHasChanged = false;
+	class Sudoku {
 
 
 
+		constructor() {
 
-	 var Sudoku;
-	 Sudoku = function () {
-		 var i;
-		 for (i = 0; i < 9; i++) {
-			 rowArray.push(new Row(this, i));
-		 }
-		 syncColumnsToRow();
-		 syncThreeByThreeSquaresToRow();
-		 registerAllObservers();
-		 console.log("created new sudoku");
-	 };
-
-
-	 function registerAllObservers() {
-		 var row;
-		for ( row in rowArray) {
-			var cell;
-			for ( cell in row.getGroup()) {
-				cell.registerObservers();
+			this.rowArray = [];
+			this.columnArray = [];
+			this.threeByThreeArray = [];
+			this.solved = false;
+			this.HowManyCellsLeft = 81;
+			this.puzzleId;
+			this.puzzleLevel;
+			this.sudokuHasChanged = false;
+			var i;
+			for (i = 0; i < 9; i++) {
+				this.rowArray.push(new Row(this, i));
 			}
-		}
-		
-	}
 
+			this.columnArray = [];
+			var rowIndex;
+			for (rowIndex = 0; rowIndex < 9; rowIndex++) {
+				var columnIndex;
+				for (columnIndex = 0; columnIndex < 9; columnIndex++) {
 
-	//GETTERS & SETTERS
-	 function getRowArray() {
-		if ( rowArray == null){
-			rowArray = [];
-		}
-		return rowArray;
-	}
-	 function setRowArray(rowArray) {
-		this.rowArray = rowArray;
-	}
-	 function getColumnArray() {
-		return columnArray;
-	}
-	 function setColumnArray( columnArray) {
-		this.columnArray = columnArray;
-	}
-	 function getThreeByThreeArray() {
-		return threeByThreeArray;
-	}
-	 function setThreeByThreeArray( threeByThreeArray) {
-		this.threeByThreeArray = threeByThreeArray;
-	}
-	
-	 function isSolved() {
-		return solved;
-	}
-
-
-	 function setSolved( solved) {
-		this.solved = solved;
-	}
-
-
-	 function getHowManyCellsLeft() {
-		return HowManyCellsLeft;
-	}
-
-
-	 function setHowManyCellsLeft( howManyCellsLeft) {
-		HowManyCellsLeft = howManyCellsLeft;
-	}
-
-
-	 function  getPuzzleId() {
-		return puzzleId;
-	}
-
-
-	 function setPuzzleId( puzzleId) {
-		this.puzzleId = puzzleId;
-	}
-
-
-
-
-	 function  getPuzzleLevel() {
-		return puzzleLevel;
-	}
-
-
-	 function setPuzzleLevel( puzzleLevel) {
-		this.puzzleLevel = puzzleLevel;
-	}
-
-
-	 function  syncColumnsToRow(){
-		columnArray=[];
-		 var rowIndex;
-		for( rowIndex=0;rowIndex<9;rowIndex++)
-		{
-			var columnIndex;
-			for( columnIndex=0;columnIndex<9;columnIndex++)
-			{
-				
-					if(columnArray.length<columnIndex+1){
-						columnArray.push( new Column(this,columnIndex));
+					if (this.columnArray.length < columnIndex + 1) {
+                        this.columnArray.push(new Column(this, columnIndex));
 //						console.log("created collumn for row : "+ row +", collumn: "+ collumn );
 					}
-				var cell;
+					var cell;
 
-                var row = rowArray[rowIndex];
-                var group = row.group;
-                cell = group[columnIndex];
-				columnArray[columnIndex].group[rowIndex]= cell;
-				cell.column = columnArray[columnIndex];
+					var row = this.rowArray[rowIndex];
+					var group = row.getGroup();
+					cell = group[columnIndex];
+                    this.columnArray[columnIndex].getGroup()[rowIndex] = cell;
+					cell.column = this.columnArray[columnIndex];
 
+				}
+			}
+			//syncColumnsToRow();
+			this.syncThreeByThreeSquaresToRow();
+			this.registerAllObservers();
+
+		console.log("created new sudoku");
+		}
+
+        syncThreeByThreeSquaresToRow() {
+            //this.threeByThreeArray=[];
+
+
+            this.syncThreeByThreeSquaresToRowHelper(0, 3, 0, 3);
+            this.syncThreeByThreeSquaresToRowHelper(0, 3, 3, 6);
+            this.syncThreeByThreeSquaresToRowHelper(0, 3, 6, 9);
+            this.syncThreeByThreeSquaresToRowHelper(3, 6, 0, 3);
+            this.syncThreeByThreeSquaresToRowHelper(3, 6, 3, 6);
+            this.syncThreeByThreeSquaresToRowHelper(3, 6, 6, 9);
+            this.syncThreeByThreeSquaresToRowHelper(6, 9, 0, 3);
+            this.syncThreeByThreeSquaresToRowHelper(6, 9, 3, 6);
+            this.syncThreeByThreeSquaresToRowHelper(6, 9, 6, 9);
+
+
+        }
+
+		syncColumnsToRow() {
+			columnArray = [];
+			var rowIndex;
+			for (rowIndex = 0; rowIndex < 9; rowIndex++) {
+				var columnIndex;
+				for (columnIndex = 0; columnIndex < 9; columnIndex++) {
+
+					if (columnArray.length < columnIndex + 1) {
+						columnArray.push(new Column(this, columnIndex));
+//						console.log("created collumn for row : "+ row +", collumn: "+ collumn );
+					}
+					var cell;
+
+					var row = rowArray[rowIndex];
+					var group = row.group;
+					cell = group[columnIndex];
+					columnArray[columnIndex].group[rowIndex] = cell;
+					cell.column = columnArray[columnIndex];
+
+				}
 			}
 		}
-	}
 
 
-	 function syncThreeByThreeSquaresToRow() {
-		threeByThreeArray.clear();
-		
-		
-		syncThreeByThreeSquaresToRowHelper(0, 3, 0, 3);
-		syncThreeByThreeSquaresToRowHelper(0, 3, 3, 6);
-		syncThreeByThreeSquaresToRowHelper(0, 3, 6, 9);
-		syncThreeByThreeSquaresToRowHelper(3, 6, 0, 3);
-		syncThreeByThreeSquaresToRowHelper(3, 6, 3, 6);
-		syncThreeByThreeSquaresToRowHelper(3, 6, 6, 9);
-		syncThreeByThreeSquaresToRowHelper(6, 9, 0, 3);
-		syncThreeByThreeSquaresToRowHelper(6, 9, 3, 6);
-		syncThreeByThreeSquaresToRowHelper(6, 9, 6, 9);
-		
-		
-	}
 
-	 function syncThreeByThreeSquaresToRowHelper( rowStart, rowEnd, columnStart, columnEnd){
-		var threeByThreeIndex=0;
-		var groupCount=0;
-		 var rowIndex;
-		for( rowIndex=rowStart;rowIndex<rowEnd;rowIndex++)
-		{
-			var columnIndex;
-			for( columnIndex=columnStart;columnIndex<columnEnd;columnIndex++,groupCount++)
-			{
-				threeByThreeIndex=calculateGroup(rowIndex, columnIndex);
-					//alt taraf ok 
-					if(threeByThreeArray.length<threeByThreeIndex+1){
-						threeByThreeArray.push( new ThreeByThreeSquare(this,threeByThreeIndex));
+
+
+
+
+
+		syncThreeByThreeSquaresToRowHelper(rowStart, rowEnd, columnStart, columnEnd) {
+			var threeByThreeIndex = 0;
+			var groupCount = 0;
+			var rowIndex;
+			for (rowIndex = rowStart; rowIndex < rowEnd; rowIndex++) {
+				var columnIndex;
+				for (columnIndex = columnStart; columnIndex < columnEnd; columnIndex++, groupCount++) {
+					threeByThreeIndex = this.calculateGroup(rowIndex, columnIndex);
+					//alt taraf ok
+					if (this.threeByThreeArray.length < threeByThreeIndex + 1) {
+						this.threeByThreeArray.push(new ThreeByThreeSquare(this, threeByThreeIndex));
 //						console.log("created ThreeByThreeSquare for group: "+group +", row : "+ row +", collumn: "+ collumn );
 					}
 					//alt taraf ok
-					var cell=rowArray.get(rowIndex).getGroup().get(columnIndex);
-					threeByThreeArray.get(threeByThreeIndex).getGroup().set(groupCount, cell);
-					cell.setThreeByThreeSquare(threeByThreeArray.get(threeByThreeIndex));
+					var cell = this.rowArray[rowIndex].getGroup()[columnIndex];
+					this.threeByThreeArray[threeByThreeIndex].getGroup()[groupCount] = cell;
+					cell.setThreeByThreeSquare(this.threeByThreeArray[threeByThreeIndex]);
 //					Cell leftCell=threeByThreeArray.get(group).getGroup().get(groupCount);
-					
+
 //					console.log("For threebythree "+leftCell.equals(rightCell)+" , "+leftCell.toString()+" , "+rightCell.toString());
+				}
 			}
+
 		}
+
+
+
+
 		
-	}
 
-	 function  calculateGroup( row, column){
-		var group=0;
-		if (row<3&&column<3)group=0;
-		else if (row<3&&column<6) group=1;
-		else if (row<3&&column<9) group=2;
-		else if (row<6&&column<3) group=3;
-		else if (row<6&&column<6) group=4;
-		else if (row<6&&column<9) group=5;
-		else if (row<9&&column<3) group=6;
-		else if (row<9&&column<6) group=7;
-		else if (row<9&&column<9) group=8;
-		
-		return group;
-	}
-	
-	/**
-	 * @return the sudokuHasChanged
-	 */
-	function  isSudokuHasChanged() {
-		return sudokuHasChanged;
-	}
+		registerAllObservers() {
 
+            for (var i = 0; i < this.rowArray.length; i++) {
 
-	/**
-	 * @param sudokuHasChanged the sudokuHasChanged to set
-	 */
-	function setSudokuHasChanged( sudokuHasChanged) {
-		this.sudokuHasChanged = sudokuHasChanged;
-	}
+                var row = this.rowArray[i];
 
-
-	 function  copy(){
-		 //var sudoku=new Sudoku();
-		 var i;
-		for ( i =0; i<9; i++ ) {
-			var row = sudoku.getRowArray().get(i);
-			var j;
-			for ( j =0; j<9; j++) {
-				var cell = row.getGroup().get(j);
-				cell.setValue(this.getRowArray().get(i).getGroup().get(j).getValue());
+                for (var j = 0; j < this.rowArray.length; j++) {
+                    var cell = row.getGroup()[j]
+                       //TODO cell.registerObservers();
+                    }
+                }
 			}
+
+
+
+
+		//GETTERS & SETTERS
+		
+
+		getRowArray() {
+			if (this.rowArray == null) {
+                this.rowArray = [];
+			}
+			return this.rowArray;
 		}
-		return sudoku;
+
+		
+
+		setRowArray(rowArray) {
+			this.rowArray = rowArray;
+		}
+
+		
+
+		getColumnArray() {
+			return this.columnArray;
+		}
+
+		
+
+		setColumnArray(columnArray) {
+			this.columnArray = columnArray;
+		}
+
+		
+
+		getThreeByThreeArray() {
+			return this.threeByThreeArray;
+		}
+
+		
+
+		setThreeByThreeArray(threeByThreeArray) {
+			this.threeByThreeArray = threeByThreeArray;
+		}
+
+		
+
+		isSolved() {
+			return this.solved;
+		}
+
+
+		
+
+		setSolved(solved) {
+			this.solved = solved;
+		}
+
+
+		
+
+		getHowManyCellsLeft() {
+			return this.HowManyCellsLeft;
+		}
+
+
+		
+
+		setHowManyCellsLeft(howManyCellsLeft) {
+            this.HowManyCellsLeft = howManyCellsLeft;
+		}
+
+
+		
+
+		getPuzzleId() {
+			return this.puzzleId;
+		}
+
+
+		
+
+		setPuzzleId(puzzleId) {
+			this.puzzleId = puzzleId;
+		}
+
+
+		
+
+		getPuzzleLevel() {
+			return this.puzzleLevel;
+		}
+
+
+		
+
+		setPuzzleLevel(puzzleLevel) {
+			this.puzzleLevel = puzzleLevel;
+		}
+
+
+
+
+
+
+		
+
+		calculateGroup(row, column) {
+			var group = 0;
+			if (row < 3 && column < 3)group = 0;
+			else if (row < 3 && column < 6) group = 1;
+			else if (row < 3 && column < 9) group = 2;
+			else if (row < 6 && column < 3) group = 3;
+			else if (row < 6 && column < 6) group = 4;
+			else if (row < 6 && column < 9) group = 5;
+			else if (row < 9 && column < 3) group = 6;
+			else if (row < 9 && column < 6) group = 7;
+			else if (row < 9 && column < 9) group = 8;
+
+			return group;
+		}
+
+		/**
+		 * @return the sudokuHasChanged
+		 */
+		
+
+		isSudokuHasChanged() {
+			return this.sudokuHasChanged;
+		}
+
+
+		/**
+		 * @param sudokuHasChanged the sudokuHasChanged to set
+		 */
+		
+
+		setSudokuHasChanged(sudokuHasChanged) {
+			this.sudokuHasChanged = sudokuHasChanged;
+		}
+
+
+		
+
+		copy() {
+			//var sudoku=new Sudoku();
+			var i;
+			for (i = 0; i < 9; i++) {
+				var row = sudoku.getRowArray().get(i);
+				var j;
+				for (j = 0; j < 9; j++) {
+					var cell = row.getGroup().get(j);
+					cell.setValue(this.getRowArray().get(i).getGroup().get(j).getValue());
+				}
+			}
+			return sudoku;
+		}
+
+
+		
+
+		compareTo(o) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+
 	}
-
-
-
-
-
-	 function  compareTo(o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
-
-	
-	
-	 /*function  toString() {
+	 /*  toString() {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {

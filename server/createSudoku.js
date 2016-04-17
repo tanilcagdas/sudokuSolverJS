@@ -1,7 +1,10 @@
 
 
-	function changeValue( sudoku, row, column, value){
-		sudoku.getRowArray().get(row).getGroup().get(column).setValue(value);
+	function changeValue( sudoku, rowIndex, columnIndex, value){
+		var row =sudoku.getRowArray()[rowIndex]
+			var group = row.getGroup()
+		var cell =group[columnIndex];
+	cell = value;
 	return sudoku;
 }
 	

@@ -1,31 +1,6 @@
 
-
-
-	var RED = "red";
-	var BLUE = "blue";
-	var row;
-	var column;
-	var threeByThreeSquare;
-	var value;
-	var found;
-	var guesses = [];
-	var color = "black";
-
-	var DEFAULT_GUESSES = [];
-	{
-		if (DEFAULT_GUESSES.length == 0) {
-            var i;
-			for ( i = 1; i < 10; i++)
-				DEFAULT_GUESSES.push(i);
-
-		}
-	}
-
-
-	var Cell;
-	Cell = function (group) {
-
-
+class Cell{
+	constructor(group){
 		if (group instanceof Row) {
 			this.setRow(group);
 		} else if (group instanceof Column) {
@@ -34,135 +9,155 @@
 			this.setThreeByThreeSquare(group);
 		}
 		// add guesses
-		setGuesses(clone(DEFAULT_GUESSES));
+		var DEFAULT_GUESSES = [];
+		{
+			if (DEFAULT_GUESSES.length == 0) {
+				var i;
+				for ( i = 1; i < 10; i++)
+					DEFAULT_GUESSES.push(i);
+
+			}
+		}
+		this.guesses = [];
+		//var guesses = clone(DEFAULT_GUESSES);
+		this.guesses = DEFAULT_GUESSES;
+		this.RED = "red";
+		this.BLUE = "blue";
+		this.row;
+		this.column;
+		this.threeByThreeSquare;
+		this.value;
+		this.found;
+		this.color = "black";
+	//?
+	var observers = [];
 	}
 
-    function registerObservers(){
-        var cell;
-        for ( cell in getRow().getGroup()) {
-            this.addObserver(cell);
-        }
-        for ( cell in getColumn().getGroup()) {
-            this.addObserver(cell);
-        }
-        for ( cell in getThreeByThreeSquare().getGroup()) {
-            this.addObserver(cell);
-        }
-
-    }
 
 
 
-	//?
-    var observers = [];
 
-    function addObserver(obj){
-        observers.push(obj);
-        //TODO
-    }
 
-	function getValue() {
+
+	registerObservers  (){
+		var cell;
+		for ( cell in getRow().getGroup()) {
+			this.addObserver(cell);
+		}
+		for ( cell in getColumn().getGroup()) {
+			this.addObserver(cell);
+		}
+		for ( cell in getThreeByThreeSquare().getGroup()) {
+			this.addObserver(cell);
+		}
+
+	}
+
+
+
+
+	 addObserver(obj){
+		observers.push(obj);
+		//TODO
+	}
+
+	 getValue() {
 		return value;
 	}
 
-	function  setValue( value) {
+	  setValue( value) {
 		if (this.value == value) {
 			return;
 		}
 		this.value = value;
-		setGuesses(null);
+		guesses = null;
 		setFound((value == 0) ? false : true);
 		setChanged();
 		getRow().getSudoku().setHowManyCellsLeft(
-				getRow().getSudoku().getHowManyCellsLeft() - 1);
+			getRow().getSudoku().getHowManyCellsLeft() - 1);
 		console.log("Cell with coordinates : " + getRow().getIndex()
-				+ "," + getColumn().getIndex() + " value set by "
-				+ Thread.currentThread().getStackTrace()[2].toString()
-				+ "\n to : " + value);
+			+ "," + getColumn().getIndex() + " value set by "
+			+ Thread.currentThread().getStackTrace()[2].toString()
+			+ "\n to : " + value);
 		notifyObservers(this);
 	}
 
 
 
-	function isFound() {
+	 isFound() {
 		return found;
 	}
 
-	function setFound( found) {
+	 setFound( found) {
 		if (getValue() == 0 && found == false) {
 			this.found = found;
 		} else if (getValue() != 0 && found == true) {
 			this.found = found;
 		} else {
 			console.log("trying to set cell found to " + found
-					+ " but value is " + getValue());
+				+ " but value is " + getValue());
 		}
 	}
 
-	function getGuesses() {
+	 getGuesses() {
 		return guesses;
 	}
 
-	function setGuesses(guesses) {
+	 setGuesses(guesses) {
 		this.guesses = guesses;
 	}
 
-	/**
-	 * @return the color
-	 */
-	function getColor() {
+
+	 getColor() {
 		return color;
 	}
 
-	/**
-	 * @param color
-	 *            the color to set
-	 */
-	function setColor( color) {
+	 setColor( color) {
 		this.color = color;
 	}
 
-	function getRow() {
+	 getRow() {
 		return row;
 	}
 
-	function setRow( row) {
+	 setRow( row) {
 		this.row = row;
 	}
 
-	function getColumn() {
+	 getColumn() {
 		return column;
 	}
 
-	function setColumn( column) {
+	 setColumn( column) {
 		this.column = column;
 	}
 
-	function getThreeByThreeSquare() {
+	 getThreeByThreeSquare() {
 		return threeByThreeSquare;
 	}
 
-	function setThreeByThreeSquare( threeByThreeSquare) {
+	 setThreeByThreeSquare( threeByThreeSquare) {
 		this.threeByThreeSquare = threeByThreeSquare;
 	}
 
-	function copy( cell)  {
+	 copy( cell)  {
 		this.clone();
 	}
 
-	/*@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("Cell value = ");
-		sb.append(value).append(" ");
-		sb.append("Cell color = ");
-		sb.append(color).append(" ");
-		sb.append("Cell guesses = ");
-		sb.append(guesses).append(" ");
-		return sb.toString();
-	}*/
 
-	function update( o,  arg) {
+	 toString() {
+	 //StringBuffer sb = new StringBuffer();
+	 //sb.append("Cell value = ");
+	 //sb.append(value).append(" ");
+	 //sb.append("Cell color = ");
+	 //sb.append(color).append(" ");
+	 //sb.append("Cell guesses = ");
+	 //sb.append(guesses).append(" ");
+	 //return sb.toString();
+	 return this.value;
+	 }
+
+	 update( o,  arg) {
 		if (arg instanceof Cell) {
 			var cell = arg;
 			if (cell == this) {
@@ -196,15 +191,15 @@
 		}
 	}
 
-	function markAsUniqueGuessAndDetermine( number,  group) {
-        var j;
+	 markAsUniqueGuessAndDetermine( number,  group) {
+		var j;
 		for ( j = 0; j < 9; j++) {
 			var compareCell = group.getGroup().get(j);
 			if (compareCell == this) {
 				continue;
 			}
 			if (compareCell.getGuesses() != null) {
-                var compareGuess;
+				var compareGuess;
 				for ( compareGuess in compareCell.getGuesses()) {
 					if (compareGuess == number) {
 						return false;
@@ -215,13 +210,13 @@
 		return true;
 	}
 
-	function clearGuess( foundValue) {
+	 clearGuess( foundValue) {
 
 		// console.log(getGuesses().contains(foundValue));
-        var gssidx;
+		var gssidx;
 		for ( gssidx = 0; gssidx < 9; gssidx++) {
 			if (getGuesses() != null && getGuesses().size() > gssidx
-					&& getGuesses().get(gssidx) == foundValue) {
+				&& getGuesses().get(gssidx) == foundValue) {
 				getGuesses().remove(gssidx);
 				if (getRow().getSudoku().isSudokuHasChanged() == false) {
 					getRow().getSudoku().setSudokuHasChanged(true);
@@ -231,4 +226,7 @@
 		}
 		return false;
 	}
+
+
+}
 

@@ -5,5 +5,7 @@ function test() {
     var sudoku = new Sudoku() ;
 
     loadDemoSudoku(sudoku);
-    alert('asd');
+
+     document.getElementById("sudoku").innerHTML = sudoku.getColumnArray();
+   
 }

@@ -2,12 +2,12 @@
 
 
 
-    varRED = "red";
-	varBLUE = "blue";
-	varROW = "row";
-	varALL = "all";
-	varCOLUMN = "column";
-	varTHREExTHREE = "3x3";
+    var RED = "red";
+	var BLUE = "blue";
+	var ROW = "row";
+	var ALL = "all";
+	var COLUMN = "column";
+	var THREExTHREE = "3x3";
 	var DEFAULT_GUESSES;
 	var trial;
 	var sudokuCorrect = true;
@@ -125,12 +125,11 @@
 	function loadDemoSudoku( demoSudoku) {
 		//  set all zeros
         var row;
-			for ( row = 0; row < demoSudoku.getRowArray().size(); row++) {
+			for ( row = 0; row < demoSudoku.getRowArray().length; row++) {
             var column;
-			for ( column = 0; column < demoSudoku.getRowArray().get(row)
-					.getGroup().size(); column++)
-				demoSudoku.getRowArray().get(row).getGroup().get(column)
-						.setValue(0);
+			for ( column = 0; column < demoSudoku.getRowArray()[row]
+					.getGroup().length; column++)
+				demoSudoku.getRowArray()[row].getGroup()[column] = 0;
 		}
 		//  put known values
 		
@@ -143,14 +142,16 @@
 	function methodRange( sudoku,  methodName,  range){
 		var method;
 		if (range === ALL ) {
-			method = getClass().getDeclaredMethod(methodName, Cell.class);
+			//method = getClass().getDeclaredMethod(methodName, Cell.class);
             var row;
 			for ( row = 0; row < 9; row++) {
                 var columnIndex;
 				for ( columnIndex = 0; columnIndex < 9; columnIndex++) {
 					var cell = sudoku.getRowArray().get(row).getGroup()
 							.get(columnIndex);
-					method.invoke(this, cell);
+					//method.invoke(this, cell);
+
+					this[methodName](this,  cell);
 				}
 			}
 		} else {
@@ -164,7 +165,7 @@
 			var group = null;
             var i;
 			for ( i = 0; i < 9; i++) {
-				if (range.equalsIgnoreCase(ROW)) {
+				if (range == ROW) {
 					group = sudoku.getRowArray().get(i);
 				} else if (range.equalsIgnoreCase(COLUMN)) {
 					group = sudoku.getColumnArray().get(i);
@@ -173,7 +174,8 @@
 				}
 				// console.log(str + " from " + range +
 				// " with the index of: " + i);
-				method.invoke(this, group);
+				//method.invoke(this, group);
+				this[methodName](this,  group);
 			}
 		}
 	}

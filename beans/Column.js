@@ -1,18 +1,18 @@
 
 
-//public class Column extends Group {
-var group;
+class Column extends Group {
+	constructor( sudoku, index) {
+		super(sudoku, index)
 
-	var Column;
-	 Column = function( sudoku, index) {
 
-		 group = new Group(sudoku, index);
 
 	}
-	
 
-	function toString() {
 
-		return group.toString();
+
+	 toString() {
+
+		return this.group.toString();
 	}
+}
 
