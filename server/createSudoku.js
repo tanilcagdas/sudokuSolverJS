@@ -4,7 +4,7 @@
 		var row =sudoku.getRowArray()[rowIndex]
 			var group = row.getGroup()
 		var cell =group[columnIndex];
-	cell = value;
+	cell.setValue(value);
 	return sudoku;
 }
 	

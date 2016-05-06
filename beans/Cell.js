@@ -65,22 +65,7 @@ class Cell{
 		return value;
 	}
 
-	  setValue( value) {
-		if (this.value == value) {
-			return;
-		}
-		this.value = value;
-		guesses = null;
-		setFound((value == 0) ? false : true);
-		setChanged();
-		getRow().getSudoku().setHowManyCellsLeft(
-			getRow().getSudoku().getHowManyCellsLeft() - 1);
-		console.log("Cell with coordinates : " + getRow().getIndex()
-			+ "," + getColumn().getIndex() + " value set by "
-			+ Thread.currentThread().getStackTrace()[2].toString()
-			+ "\n to : " + value);
-		notifyObservers(this);
-	}
+
 
 
 
@@ -117,7 +102,7 @@ class Cell{
 	}
 
 	 getRow() {
-		return row;
+		return this.row;
 	}
 
 	 setRow( row) {
@@ -226,6 +211,28 @@ class Cell{
 		}
 		return false;
 	}
+
+	setValue( value) {
+		if (this.value == value) {
+			return;
+		}
+		this.value = value;
+		//setGuesses(null);
+        if(value == 0){
+            this.found = false;
+        }else{
+            this.found =  true;
+        }
+		//?setChanged();
+        this.row.sudoku.howManyCellsLeft =
+            this.row.sudoku.getHowManyCellsLeft() - 1;
+		console.log("Cell with coordinates : " + this.row.index
+			+ "," + this.column.index + " value set by "
+			//+ Thread.currentThread().getStackTrace()[2].toString()
+			+ "\n to : " + value);
+		//notifyObservers(this);
+	}
+
 
 
 }

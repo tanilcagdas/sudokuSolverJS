@@ -129,7 +129,8 @@
             var column;
 			for ( column = 0; column < demoSudoku.getRowArray()[row]
 					.getGroup().length; column++)
-				demoSudoku.getRowArray()[row].getGroup()[column] = 0;
+				var cell = demoSudoku.getRowArray()[row].getGroup()[column];
+				cell.setValue(0);
 		}
 		//  put known values
 		
