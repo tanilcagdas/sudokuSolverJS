@@ -27,28 +27,28 @@
 		var sudokuSolution ;
             /*= new Sudoku();*/
 		sudokuSolution = sudoku.copy();
-		sudokuSolution.setSudokuHasChanged(true);
+		sudokuSolution.sudokuHasChanged = true;
 		try {
 			evaluateGuesses(sudokuSolution);
 		} catch (e) {
-			console.log("Error Ocured", e);
+			console.error("Error Ocured", e);
 		}
 		//  Solve the f.cking sudoku
 
 		//  Check if the sudoku has changed
 		trial = 1;
-		while (sudokuSolution.isSudokuHasChanged()) {
-			while (sudokuSolution.isSudokuHasChanged()) {
+		while (sudokuSolution.sudokuHasChanged) {
+			while (sudokuSolution.sudokuHasChanged) {
 				solveSudokuByAlgorithm1(sudokuSolution);
 			}
 			solveSudokuByAlgorithm2(sudokuSolution);
 
 		}
-		if (!sudokuSolution.isSolved()) {
+		if (!sudokuSolution.solved) {
 			try {
-				NotSolvedWriter.log(sudoku, sudokuSolution);
+				//TODO NotSolvedWriter.log(sudoku, sudokuSolution);
 			} catch (e) {
-				console.log( "Error Ocured", e);
+				console.error( "Error Ocured", e);
 			}
 		}
 		return sudokuSolution;
@@ -58,7 +58,7 @@
 		try {
 			evaluateGuesses(sudokuSolution);
 		} catch ( e) {
-			console.log( "Error Ocured", e);
+			console.error( "Error Ocured", e);
 		}
 
 		//  Check if the sudoku has changed
@@ -71,24 +71,24 @@
 			this[methodName](this,  sudokuSolution);
 
 		} catch (e) {
-			console.log("Error Ocured", e);
+			console.error("Error Ocured", e);
 		} 
 		return sudokuSolution;
 	}
 
 	function solveSudokuByAlgorithm1( sudokuSolution) {
-		sudokuSolution.sudokuHasChanged(false);
+		sudokuSolution.sudokuHasChanged = false;
 		try {
-			clearGuessesInGroup(sudokuSolution);
+			clearGuessesInGroupOfSudoku(sudokuSolution);
 		} catch (e) {
-			console.log("Error Ocured", e);
+			console.error("Error Ocured", e);
 		}
 		try {
 			determineCellsWhoHas1Guess(sudokuSolution);
 		} catch (e) {
-			console.log( "Error Ocured", e);
+			console.error( "Error Ocured", e);
 		}
-		if (sudokuSolution.getHowManyCellsLeft() == 0) {
+		if (sudokuSolution.howManyCellsLeft  == 0) {
 			sudokuSolution.setSolved(true);
 			sudokuSolution.setSudokuHasChanged(false);
             console.log("Sudoku is solved");
@@ -100,17 +100,19 @@
 	}
 
 	function solveSudokuByAlgorithm2( sudokuSolution) {
-		if (sudokuSolution.getHowManyCellsLeft() != 0)
+		if (sudokuSolution.howManyCellsLeft != 0)
 			try {
 				determineWhoHasUniqueGuessInGroup(sudokuSolution);
 			} 
 			catch (e) {
-				if(e.getCause() instanceof SudokuException){
-					console.log(e.getCause().getMessage());
+
+				//if(e.getCause() instanceof SudokuException){
+					console.error(e);
 					return sudokuSolution;
-				}else {
-					console.log(Level.SEVERE, "Error Ocured", e);
-				}
+				//}else {
+				//	console.log(Level.SEVERE, "Error Ocured", e);
+				//}
+
 			}
 		// 
 		if (sudokuSolution.getHowManyCellsLeft() == 0) {
@@ -148,40 +150,39 @@
 			for ( row = 0; row < 9; row++) {
                 var columnIndex;
 				for ( columnIndex = 0; columnIndex < 9; columnIndex++) {
-					var cell = sudoku.getRowArray().get(row).getGroup()
-							.get(columnIndex);
+					var cell = sudoku.rowArray[row].group[columnIndex];
 					//method.invoke(this, cell);
 
-					this[methodName](this,  cell);
+					this[methodName](  cell);
 				}
 			}
 		} else {
 			var str = null;
-			method = getClass().getDeclaredMethod(methodName, Group.class);
-			if (methodName.equals("clearGuessesInGroup"))
+			//method = getClass().getDeclaredMethod(methodName, Group.class);
+			if (methodName === "clearGuessesInGroup")
 				str = "Clearing guesses";
-			else if (methodName.equals("determineWhoHasUniqueGuessInGroup"))
+			else if (methodName === "determineWhoHasUniqueGuessInGroup")
 				str = "Determining Who Has Unique Guess In Group";
 
 			var group = null;
             var i;
 			for ( i = 0; i < 9; i++) {
-				if (range == ROW) {
-					group = sudoku.getRowArray().get(i);
-				} else if (range.equalsIgnoreCase(COLUMN)) {
-					group = sudoku.getColumnArray().get(i);
-				} else if (range.equalsIgnoreCase("3x3")) {
-					group = sudoku.getThreeByThreeArray().get(i);
+				if (range === ROW) {
+					group = sudoku.getRowArray()[i];
+				} else if (range === COLUMN ) {
+					group = sudoku.getColumnArray()[i];
+				} else if (range === "3x3") {
+					group = sudoku.getThreeByThreeArray()[i];
 				}
 				// console.log(str + " from " + range +
 				// " with the index of: " + i);
 				//method.invoke(this, group);
-				this[methodName](this,  group);
+				this[methodName](  group);
 			}
 		}
 	}
 
-	function  evaluateGuesses( cell) {
+	function  evaluateGuessesCell( cell) {
 		if (cell.getValue() == 0) {
 			cell.setGuesses( DEFAULT_GUESSES.clone());
 		} else {
@@ -195,8 +196,8 @@
 		var foundValuesInGroup =[];
 		var i;
 		for ( i = 0; i < 9; i++) {
-			if (group.getGroup().get(i).getValue() != 0) {
-				foundValuesInGroup.push(group.getGroup().get(i).getValue());
+			if (group.getGroup()[i].getValue() != 0) {
+				foundValuesInGroup.push(group.getGroup()[i].getValue());
 			}
 		}
         var foundValues;
@@ -207,16 +208,16 @@
 				for ( gssidx = 0; gssidx < 9; gssidx++) {
 					var Guesses = null;
 					try {
-						Guesses = group.getGroup().get(groupidx).getGuesses();
+						Guesses = group.getGroup()[groupidx].getGuesses();
 					} catch (e) {
-						console.log( "Error Ocured", e);
+						console.error( "Error Ocured", e);
 					}
-					if (Guesses != null && Guesses.size() > gssidx
-							&& Guesses.get(gssidx) == foundValues) {
-						group.getGroup().get(groupidx).getGuesses()
-								.remove(gssidx);
-						if (group.getSudoku().isSudokuHasChanged() == false) {
-							group.getSudoku().setSudokuHasChanged(true);
+					if (Guesses != null && Guesses.length > gssidx
+							&& Guesses[gssidx] == foundValues) {
+						group.getGroup()[groupidx].getGuesses()
+								.splice(gssidx, 1);
+						if (group.sudoku.sudokuHasChanged === false) {
+							group.sudoku.sudokuHasChanged = true;
 						}
 
 
@@ -227,21 +228,22 @@
 		}
 	};
 
-	function  determineCellsWhoHas1Guess( cell){
-		if (cell.getValue() == 0 && cell.getGuesses() != null
-				&& cell.getGuesses().size() == 1) {
+	function  determineCellsWhoHas1GuessForCell( cell){
+		if (cell.getValue() === 0 && cell.getGuesses() != null
+				&& cell.getGuesses().length === 1) {
 			var value = cell.getGuesses().get(0);
 			cell.setValue(value);
 			cell.setColor(RED);
-			if (cell.getRow().getSudoku().isSudokuHasChanged() == false) {
-				cell.getRow().getSudoku().setSudokuHasChanged(true);
+			if (cell.getRow().sudoku.sudokuHasChanged === false) {
+				cell.getRow().sudoku.sudokuHasChanged = true;
 				console.log("sudoku has changed value has been found");
 			}
 		}
 	}
 
 
-	function  determineWhoHasUniqueGuessInGroup( group) {
+	function  determineWhoHasUniqueGuessInGroupForGroup( group) {
+		var number ;
 
 		for ( number = 1; number < 10; number++) {
 			var uniqueGuessCount = 0;
@@ -313,24 +315,24 @@
 		methodRange(sudoku, "evaluateGuesses", ALL);
 	}
 
-	function  clearGuessesInGroup( sudoku) {
+	function  clearGuessesInGroupOfSudoku( sudoku) {
 		methodRange(sudoku, "clearGuessesInGroup", ROW);
 		methodRange(sudoku, "clearGuessesInGroup", COLUMN);
 		methodRange(sudoku, "clearGuessesInGroup", "3x3");
 	}
 
 	function  determineCellsWhoHas1Guess( sudokuSolution) {
-		methodRange(sudokuSolution, "determineCellsWhoHas1Guess", ALL);
+		methodRange(sudokuSolution, "determineCellsWhoHas1GuessForCell", ALL);
 		console.log(sudokuSolution.getHowManyCellsLeft()
 				+ " Cells is waiting to be solved");
 	}
 
 
 	function determineWhoHasUniqueGuessInGroup( sudokuSolution) {
-		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroup", ROW);
-		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroup",
+		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroupForGroup", ROW);
+		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroupForGroup",
 				COLUMN);
-		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroup", "3x3");
+		methodRange(sudokuSolution, "determineWhoHasUniqueGuessInGroupForGroup", "3x3");
 
 	}
 

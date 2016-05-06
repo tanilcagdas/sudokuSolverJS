@@ -62,7 +62,7 @@ class Cell{
 	}
 
 	 getValue() {
-		return value;
+		return this.value;
 	}
 
 
@@ -70,7 +70,7 @@ class Cell{
 
 
 	 isFound() {
-		return found;
+		return this.found;
 	}
 
 	 setFound( found) {
@@ -85,7 +85,7 @@ class Cell{
 	}
 
 	 getGuesses() {
-		return guesses;
+		return this.guesses;
 	}
 
 	 setGuesses(guesses) {
@@ -94,7 +94,7 @@ class Cell{
 
 
 	 getColor() {
-		return color;
+		return this.color;
 	}
 
 	 setColor( color) {
@@ -110,7 +110,7 @@ class Cell{
 	}
 
 	 getColumn() {
-		return column;
+		return this.column;
 	}
 
 	 setColumn( column) {
@@ -118,7 +118,7 @@ class Cell{
 	}
 
 	 getThreeByThreeSquare() {
-		return threeByThreeSquare;
+		return this.threeByThreeSquare;
 	}
 
 	 setThreeByThreeSquare( threeByThreeSquare) {

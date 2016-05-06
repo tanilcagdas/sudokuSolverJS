@@ -9,7 +9,7 @@
 			this.columnArray = [];
 			this.threeByThreeArray = [];
 			this.solved = false;
-			this.HowManyCellsLeft = 81;
+			this.howManyCellsLeft = 81;
 			this.puzzleId;
 			this.puzzleLevel;
 			this.sudokuHasChanged = false;
@@ -195,14 +195,14 @@
 		
 
 		getHowManyCellsLeft() {
-			return this.HowManyCellsLeft;
+			return this.howManyCellsLeft;
 		}
 
 
 		
 
 		setHowManyCellsLeft(howManyCellsLeft) {
-            this.HowManyCellsLeft = howManyCellsLeft;
+            this.howManyCellsLeft = howManyCellsLeft;
 		}
 
 
@@ -278,17 +278,17 @@
 		
 
 		copy() {
-			//var sudoku=new Sudoku();
+			var sudokuCopy =new Sudoku();
 			var i;
 			for (i = 0; i < 9; i++) {
-				var row = sudoku.getRowArray().get(i);
+				var row = sudokuCopy.rowArray[i];
 				var j;
 				for (j = 0; j < 9; j++) {
-					var cell = row.getGroup().get(j);
-					cell.setValue(this.getRowArray().get(i).getGroup().get(j).getValue());
+					var cell = row.getGroup()[j];
+					cell.setValue(this.getRowArray()[i].getGroup()[j].getValue());
 				}
 			}
-			return sudoku;
+			return sudokuCopy;
 		}
 
 
