@@ -11,6 +11,14 @@
 	var DEFAULT_GUESSES;
 	var trial;
 	var sudokuCorrect = true;
+
+	function defaultGuesses(){
+		var arr= [];
+		var i ;
+		for ( i = 1; i < 10; i++)
+		arr.push(i);
+		return arr;
+	}
 	/*	= new ArrayList<Integer>();
 
 	private int trial;
@@ -182,9 +190,9 @@
 		}
 	}
 
-	function  evaluateGuessesCell( cell) {
+	function  evaluateGuessesForCell( cell) {
 		if (cell.getValue() == 0) {
-			cell.setGuesses( DEFAULT_GUESSES.clone());
+			cell.setGuesses( defaultGuesses());
 		} else {
 			cell.setFound(true);
 		}
@@ -312,7 +320,7 @@
 	};
 
 	function  evaluateGuesses( sudoku) {
-		methodRange(sudoku, "evaluateGuesses", ALL);
+		methodRange(sudoku, "evaluateGuessesForCell", ALL);
 	}
 
 	function  clearGuessesInGroupOfSudoku( sudoku) {

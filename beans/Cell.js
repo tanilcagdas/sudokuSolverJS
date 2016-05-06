@@ -74,9 +74,9 @@ class Cell{
 	}
 
 	 setFound( found) {
-		if (getValue() == 0 && found == false) {
+		if (this.value === 0 && found == false) {
 			this.found = found;
-		} else if (getValue() != 0 && found == true) {
+		} else if (this.value != 0 && found == true) {
 			this.found = found;
 		} else {
 			console.log("trying to set cell found to " + found
@@ -217,13 +217,13 @@ class Cell{
 			return;
 		}
 		this.value = value;
-		//setGuesses(null);
+		this.guesses = null ;
         if(value == 0){
             this.found = false;
         }else{
             this.found =  true;
         }
-		//?setChanged();
+		//sudoku.sudokuHasChanged = true;
         this.row.sudoku.howManyCellsLeft =
             this.row.sudoku.getHowManyCellsLeft() - 1;
 		console.log("Cell with coordinates : " + this.row.index
