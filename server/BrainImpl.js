@@ -11,6 +11,7 @@
 	var DEFAULT_GUESSES;
 	var trial;
 	var sudokuCorrect = true;
+	var InternalHowManyCellsLeft = 0;
 
 	function defaultGuesses(){
 		var arr= [];
@@ -41,6 +42,12 @@
 		} catch (e) {
 			console.error("Error Ocured", e);
 		}
+
+		try {
+			countHowManyCellsLeft(sudokuSolution);
+		} catch ( e) {
+			console.error(e);
+		}
 		//  Solve the f.cking sudoku
 
 		//  Check if the sudoku has changed
@@ -48,8 +55,10 @@
 		while (sudokuSolution.sudokuHasChanged) {
 			while (sudokuSolution.sudokuHasChanged) {
 				solveSudokuByAlgorithm1(sudokuSolution);
+				sudokuSolution.setHowManyCellsLeft(InternalHowManyCellsLeft);
 			}
 			solveSudokuByAlgorithm2(sudokuSolution);
+			sudokuSolution.setHowManyCellsLeft(InternalHowManyCellsLeft);
 
 		}
 		if (!sudokuSolution.solved) {
@@ -204,12 +213,13 @@
 		var foundValuesInGroup =[];
 		var i;
 		for ( i = 0; i < 9; i++) {
-			if (group.getGroup()[i].getValue() != 0) {
+			if (group.getGroup()[i].getValue() != undefined && group.getGroup()[i].getValue() !=null && group.getGroup()[i].getValue() != 0) {
 				foundValuesInGroup.push(group.getGroup()[i].getValue());
 			}
 		}
-        var foundValues;
-		for ( foundValues in foundValuesInGroup) {
+        var fi;
+		for ( fi = 0; fi< foundValuesInGroup.length ; fi++) {
+			var foundValues = foundValuesInGroup[fi];
             var groupidx;
 			for ( groupidx = 0; groupidx < 9; groupidx++) {
                 var gssidx;
@@ -239,7 +249,7 @@
 	function  determineCellsWhoHas1GuessForCell( cell){
 		if (cell.getValue() === 0 && cell.getGuesses() != null
 				&& cell.getGuesses().length === 1) {
-			var value = cell.getGuesses().get(0);
+			var value = cell.getGuesses()[0];
 			cell.setValue(value);
 			cell.setColor(RED);
 			if (cell.getRow().sudoku.sudokuHasChanged === false) {
@@ -247,6 +257,21 @@
 				console.log("sudoku has changed value has been found");
 			}
 		}
+	}
+
+	function countHowManyCellsLeft(sudoku){
+
+		InternalHowManyCellsLeft = 0;
+		methodRange(sudoku, "countHowManyCellsLeftForCell", ALL);
+		sudoku.setHowManyCellsLeft(InternalHowManyCellsLeft);
+		console.log(InternalHowManyCellsLeft + " Cells is waiting to be solved");
+
+	}
+
+	function countHowManyCellsLeftForCell( cell)  {
+		if (cell.getValue() == 0)
+			InternalHowManyCellsLeft++;
+
 	}
 
 
@@ -312,6 +337,7 @@
 						cell.setValue(number);
 						cell.setColor(BLUE);
 						group.getSudoku().setSudokuHasChanged(true);
+						InternalHowManyCellsLeft = InternalHowManyCellsLeft - 1;
 						break;
 					};
 				}
