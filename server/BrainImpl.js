@@ -33,6 +33,7 @@
 	private boolean sudokuCorrect;*/
 
 	function solveSudoku( sudoku) {
+		var startTime = new Date().getTime();
 		var sudokuSolution ;
             /*= new Sudoku();*/
 		sudokuSolution = sudoku.copy();
@@ -68,6 +69,8 @@
 				console.error( "Error Ocured", e);
 			}
 		}
+		var endTime = new Date().getTime();
+		console.log(endTime -startTime );
 		return sudokuSolution;
 	}
 
@@ -280,11 +283,9 @@
 
 		for ( number = 1; number < 10; number++) {
 			var uniqueGuessCount = 0;
-            var cell;
-			for ( cell in  group.getGroup()) {
+            for (let cell of  group.getGroup()) {
 				if (cell.guesses != null) {
-                    var guess;
-					for ( guess in cell.getGuesses()) {
+                    for (let guess of cell.getGuesses()) {
 						if (guess == number) {
 							uniqueGuessCount++;
 						}
@@ -292,9 +293,8 @@
 				}
 			}
 			if (uniqueGuessCount == 1) {
-                var cell;
-				for (cell in group.getGroup()) {
-					if(cell.value()==number){
+                for (let cell of group.getGroup()) {
+					if(cell.value==number){
 //						console.log("The number : " + number +" is a unique guess but it exists in the group");
 						return;
 					}
@@ -314,20 +314,18 @@
 	function  markAsUniqueGuessAndDetermine( number,  group) {
         var i;
 		for ( i = 0; i < 9; i++) {
-			var cell = group.getGroup().get(i);
+			var cell = group.getGroup()[i];
 			if (cell.getGuesses() != null) {
-                var guess;
-				for (guess in cell.getGuesses()) {
+				for (let guess of cell.getGuesses()) {
 					if (guess == number) {
 						// TODO check others
                         var j;
 						for ( j = 0; j < 9; j++) {
 							if (i == j)
 								continue;
-							var compareCell = group.getGroup().get(j);
+							var compareCell = group.getGroup()[j];
 							if (compareCell.getGuesses() != null) {
-                                var compareGuess;
-							for (compareGuess in compareCell.getGuesses()) {
+							for (let compareGuess of compareCell.getGuesses()) {
 								if (compareGuess == number) {
 									return;
 								}
@@ -336,7 +334,7 @@
 						}
 						cell.setValue(number);
 						cell.setColor(BLUE);
-						group.getSudoku().setSudokuHasChanged(true);
+						group.sudoku.setSudokuHasChanged(true);
 						InternalHowManyCellsLeft = InternalHowManyCellsLeft - 1;
 						break;
 					};

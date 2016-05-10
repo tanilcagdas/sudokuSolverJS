@@ -40,14 +40,14 @@ class Cell{
 
 
 	registerObservers  (){
-		var cell;
-		for ( cell in getRow().getGroup()) {
+
+		for (let cell of getRow().getGroup()) {
 			this.addObserver(cell);
 		}
-		for ( cell in getColumn().getGroup()) {
+		for (let cell of getColumn().getGroup()) {
 			this.addObserver(cell);
 		}
-		for ( cell in getThreeByThreeSquare().getGroup()) {
+		for (let cell of getThreeByThreeSquare().getGroup()) {
 			this.addObserver(cell);
 		}
 
@@ -184,8 +184,7 @@ class Cell{
 				continue;
 			}
 			if (compareCell.getGuesses() != null) {
-				var compareGuess;
-				for ( compareGuess in compareCell.getGuesses()) {
+				for (let compareGuess of compareCell.getGuesses()) {
 					if (compareGuess == number) {
 						return false;
 					}
