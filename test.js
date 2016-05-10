@@ -2,12 +2,24 @@
  * Created by tanilcagdas on 02/04/16.
  */
 function test() {
-    var sudoku = new Sudoku() ;
+    sudoku = new Sudoku() ;
+    printSudoku(sudoku);
 
+
+}
+
+function loadDemoSudokuTest() {
     loadDemoSudoku(sudoku);
+    printSudoku(sudoku);
+}
 
-   sudoku = solveSudoku(sudoku);
+function solveSudokuTest() {
+    sudoku = solveSudoku(sudoku);
+    printSudoku(sudoku);
 
+}
+
+function printSudoku(sudoku) {
     var str = "<center> <table>";
     for(var i = 0; i<9 ; i++){
         str = str + "<tr>";
@@ -22,7 +34,7 @@ function test() {
             str = str +    '"';
             str = str + ">";
 
-           var val =  sudoku.getColumnArray()[i].getGroup()[j].getValue();
+            var val =  sudoku.getColumnArray()[i].getGroup()[j].getValue();
             if(val != undefined && val != 0){
                 str = str + val;
             }
@@ -34,7 +46,5 @@ function test() {
     }
     str = str + "</table>";
 
-     document.getElementById("sudoku").innerHTML = str;
-
-
+    document.getElementById("sudoku").innerHTML = str;
 }
