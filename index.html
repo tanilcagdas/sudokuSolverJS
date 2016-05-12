@@ -35,18 +35,21 @@
 <div ng-controller="sudokuCtrl"
      class="container">
 
-    <table id="sudokutable" class="table table-striped table-bordered"
-           cellspacing="0" width="100%">
+    <table id="sudokutable" class="table-striped table-bordered" style="margin: auto"
+           cellspacing="0" >
 
         <tr ng-repeat="x in sudoku.rowArray">
-            <td ng-repeat="y in x.group">
+            <td style="width:15px ; height:15px;" ng-repeat="y in x.group">
                 <input type='text' size='1' ng-model="y.value" >
 
             </td>
         </tr>
     </table>
-</div>
 
+    <button ng-click="solve()">solve</button>
+
+</div>
+<!--
 <p id="sudoku">hello</p>
 <input type="button" value="loadDemoSudoku" onclick="loadDemoSudokuTest();"/>
 <input type="button" value="solveSudoku" onclick="solveSudokuTest();"/>

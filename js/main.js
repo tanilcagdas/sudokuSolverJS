@@ -23,24 +23,23 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 
 
-app.controller('sudokuCtrl', function ( $scope) {
+app.controller('sudokuCtrl',  ['$scope', function($scope)  {
   console.log("Sudoku Controller");
 
 	$scope.sudoku;
 
-
 	function init() {
 		$scope.sudoku = new Sudoku() ;
-		printSudoku($scope.sudoku);
+		<!--printSudoku($scope.sudoku);-->
+	};
 
-
-	}
+	$scope.solve = function(){
+		$scope.sudoku  = solveSudoku($scope.sudoku )
+	};
 
 	init();
 	console.log($scope.sudoku);
 
-
-
-});
+}]);
 
 
