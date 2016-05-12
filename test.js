@@ -37,6 +37,8 @@ function printSudoku(sudoku) {
             var val =  sudoku.getColumnArray()[i].getGroup()[j].getValue();
             if(val != undefined && val != 0){
                 str = str + val;
+            }else{
+                str = str + " <input type='text' size='1'> "
             }
 
             str = str + "</td>";
