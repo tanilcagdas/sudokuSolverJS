@@ -10,6 +10,8 @@ For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap
 
 html, body {
     height: 100%;
+    --my-color: black;
+    --my-color2: white;
 }
 
 body {
@@ -135,3 +137,29 @@ footer {
         /* increases the carousel height so it looks good on phones */
     }
 }
+element {
+
+}
+
+
+.grp0 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp2 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp4 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp6 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp8 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+

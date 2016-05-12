@@ -35,24 +35,31 @@
 <div ng-controller="sudokuCtrl"
      class="container">
 
-    <table id="sudokutable" class="table-striped table-bordered" style="margin: auto"
-           cellspacing="0" >
+<div>
+    <table id="sudokutable" class="table-striped table-bordered" style="border-right: #666699; margin: auto;  cellspacing:0; solid: 2px;">
+
 
         <tr ng-repeat="x in sudoku.rowArray">
-            <td style="width:15px ; height:15px;" ng-repeat="y in x.group">
-                <input type='text' size='1' ng-model="y.value" >
-
+            <td style="width:30px ; height:20px; " ng-repeat="y in x.group">
+                <input style="margin: auto ;width: 2em;" type='number' size='1' ng-model="y.value"
+                       class="grp{{y.threeByThreeSquare.index}}">
             </td>
         </tr>
-    </table>
 
-    <button ng-click="solve()">solve</button>
+
+    </table>
+    <div style="margin: auto ;width :200px">
+
+
+        <button style="margin: auto" ng-click="clear()">clear</button>
+        <button style="margin: auto" ng-click="loadDemo()">load demo</button>
+    <button style="margin: auto" ng-click="solve()">solve</button>
+    </div>
 
 </div>
-<!--
-<p id="sudoku">hello</p>
-<input type="button" value="loadDemoSudoku" onclick="loadDemoSudokuTest();"/>
-<input type="button" value="solveSudoku" onclick="solveSudokuTest();"/>
+
+</div>
+
 
 <!-- Vendor: Javascripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -64,7 +71,6 @@
 
 <!-- Our Website Javascripts -->
 <script src="js/main.js"></script>
-<script src="test.js"></script>
 <script src="beans/Group.js"></script>
 <script src="server/createSudoku.js"></script>
 <script src="server/BrainImpl.js"></script>

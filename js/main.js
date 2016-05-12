@@ -33,8 +33,16 @@ app.controller('sudokuCtrl',  ['$scope', function($scope)  {
 		<!--printSudoku($scope.sudoku);-->
 	};
 
+	$scope.loadDemo = function(){
+		$scope.sudoku  = loadDemoSudoku($scope.sudoku )
+	};
+
 	$scope.solve = function(){
 		$scope.sudoku  = solveSudoku($scope.sudoku )
+	};
+
+	$scope.clear = function(){
+		init();
 	};
 
 	init();
