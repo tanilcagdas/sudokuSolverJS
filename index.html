@@ -17,9 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Vendor: Bootstrap Stylesheets http://getbootstrap.com -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Our Website CSS Styles -->
     <link rel="stylesheet" href="css/main.css">
@@ -36,24 +36,24 @@
      class="container">
 
 <div>
-    <table id="sudokutable" class="table-striped table-bordered" style="border-right: #666699; margin: auto;  cellspacing:0; solid: 2px;">
+    <table id="sudokutable" class="  sudoku-table" >
 
 
         <tr ng-repeat="x in sudoku.rowArray">
-            <td style="width:30px ; height:20px; " ng-repeat="y in x.group">
-                <input style="margin: auto ;width: 2em;" type='number' size='1' ng-model="y.value"
-                       class="grp{{y.threeByThreeSquare.index}}">
+            <td class="column" ng-repeat="y in x.group">
+                <input type='number' size='1' ng-model="y.value"
+                       class="cell grp{{y.threeByThreeSquare.index}}">
             </td>
         </tr>
 
 
     </table>
-    <div style="margin: auto ;width :200px">
+    <div class="button-div">
 
 
-        <button style="margin: auto" ng-click="clear()">clear</button>
-        <button style="margin: auto" ng-click="loadDemo()">load demo</button>
-    <button style="margin: auto" ng-click="solve()">solve</button>
+        <button class="clear-button" ng-click="clear()">clear</button>
+        <button class="load-button" ng-click="loadDemo()">load demo</button>
+        <button class="solve-button" ng-click="solve()">solve</button>
     </div>
 
 </div>

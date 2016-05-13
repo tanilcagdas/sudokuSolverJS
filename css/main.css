@@ -137,9 +137,40 @@ footer {
         /* increases the carousel height so it looks good on phones */
     }
 }
-element {
-
+.cell {
+    margin: auto ;
+    width: 2em;
 }
+.column {
+    width:30px ;
+    height:20px;
+}
+.sudoku-table{
+    margin: auto;
+}
+
+.button-div button{
+    margin-top:8px;
+    border:0px;
+    border-radius: 2px;
+    padding: 6px 15px;
+}
+
+.clear-button{
+    background-color: lightsalmon;
+}
+.solve-button{
+    background-color: aquamarine;
+}
+.load-button{
+    background-color: #007fb1;
+}
+
+.button-div{
+    width: %100;
+    text-align:center;
+}
+
 
 
 .grp0 {

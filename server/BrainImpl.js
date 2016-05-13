@@ -203,13 +203,14 @@
 	}
 
 	function  evaluateGuessesForCell( cell) {
-		if (cell.getValue() == 0) {
+		if (cell.getValue() == undefined || cell.getValue() == null || cell.getValue() === 0) {
 			cell.setGuesses( defaultGuesses());
 		} else {
 			cell.setFound(true);
+			console.log(cell.getValue() + ", " + cell.isFound());
+			console.log(cell.getColumn().sudoku.howManyCellsLeft);
 		}
 
-		// console.log(cell.getValue() + ", " + cell.isFound());
 	}
 
 	function  clearGuessesInGroup( group) {
