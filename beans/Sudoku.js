@@ -278,7 +278,9 @@
 		
 
 		copy() {
-			var sudokuCopy =new Sudoku();
+			return this;
+			//TODO later
+			/*var sudokuCopy =new Sudoku();
 			var i;
 			for (i = 0; i < 9; i++) {
 				var row = sudokuCopy.rowArray[i];
@@ -288,7 +290,7 @@
 					cell.setValue(this.getRowArray()[i].getGroup()[j].getValue());
 				}
 			}
-			return sudokuCopy;
+			return sudokuCopy;*/
 		}
 
 

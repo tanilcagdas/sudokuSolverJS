@@ -11,7 +11,6 @@
 	var DEFAULT_GUESSES;
 	var trial;
 	var sudokuCorrect = true;
-	var InternalHowManyCellsLeft = 0;
 
 	function defaultGuesses(){
 		var arr= [];
@@ -20,17 +19,6 @@
 		arr.push(i);
 		return arr;
 	}
-	/*	= new ArrayList<Integer>();
-
-	private int trial;
-	{
-		if (DEFAULT_GUESSES.size() == 0) {
-			for (int i = 1; i < 10; i++)
-				DEFAULT_GUESSES.push(i);
-
-		}
-	}
-	private boolean sudokuCorrect;*/
 
 	function solveSudoku( sudoku) {
 		var startTime = new Date().getTime();
@@ -56,10 +44,8 @@
 		while (sudokuSolution.sudokuHasChanged) {
 			while (sudokuSolution.sudokuHasChanged) {
 				solveSudokuByAlgorithm1(sudokuSolution);
-				sudokuSolution.setHowManyCellsLeft(InternalHowManyCellsLeft);
 			}
 			solveSudokuByAlgorithm2(sudokuSolution);
-			sudokuSolution.setHowManyCellsLeft(InternalHowManyCellsLeft);
 
 		}
 		if (!sudokuSolution.solved) {
@@ -165,24 +151,16 @@
 	function methodRange( sudoku,  methodName,  range){
 		var method;
 		if (range === ALL ) {
-			//method = getClass().getDeclaredMethod(methodName, Cell.class);
             var row;
 			for ( row = 0; row < 9; row++) {
                 var columnIndex;
 				for ( columnIndex = 0; columnIndex < 9; columnIndex++) {
 					var cell = sudoku.rowArray[row].group[columnIndex];
-					//method.invoke(this, cell);
 
 					this[methodName](  cell);
 				}
 			}
 		} else {
-			var str = null;
-			//method = getClass().getDeclaredMethod(methodName, Group.class);
-			if (methodName === "clearGuessesInGroup")
-				str = "Clearing guesses";
-			else if (methodName === "determineWhoHasUniqueGuessInGroup")
-				str = "Determining Who Has Unique Guess In Group";
 
 			var group = null;
             var i;
@@ -194,9 +172,6 @@
 				} else if (range === "3x3") {
 					group = sudoku.getThreeByThreeArray()[i];
 				}
-				// console.log(str + " from " + range +
-				// " with the index of: " + i);
-				//method.invoke(this, group);
 				this[methodName](  group);
 			}
 		}
@@ -251,7 +226,7 @@
 	};
 
 	function  determineCellsWhoHas1GuessForCell( cell){
-		if (cell.getValue() === 0 && cell.getGuesses() != null
+		if ((cell.getValue() == undefined || cell.getValue() == null || cell.getValue() === 0) && cell.getGuesses() != null
 				&& cell.getGuesses().length === 1) {
 			var value = cell.getGuesses()[0];
 			cell.setValue(value);
@@ -265,16 +240,17 @@
 
 	function countHowManyCellsLeft(sudoku){
 
-		InternalHowManyCellsLeft = 0;
 		methodRange(sudoku, "countHowManyCellsLeftForCell", ALL);
-		sudoku.setHowManyCellsLeft(InternalHowManyCellsLeft);
-		console.log(InternalHowManyCellsLeft + " Cells is waiting to be solved");
+		console.log(sudoku.howManyCellsLeft + " Cells is waiting to be solved");
 
 	}
 
 	function countHowManyCellsLeftForCell( cell)  {
-		if (cell.getValue() == 0)
-			InternalHowManyCellsLeft++;
+		if (cell.getValue() == undefined || cell.getValue() == null || cell.getValue() === 0){
+			var sudoku = cell.row.sudoku;
+			sudoku.howManyCellsLeft = sudoku.howManyCellsLeft + 1;
+		}
+
 
 	}
 
@@ -296,7 +272,6 @@
 			if (uniqueGuessCount == 1) {
                 for (let cell of group.getGroup()) {
 					if(cell.value==number){
-//						console.log("The number : " + number +" is a unique guess but it exists in the group");
 						return;
 					}
 				}
@@ -306,7 +281,7 @@
 				setSudokuCorrect(true);
 				isSudokuCorrect(group);
 				if(!isSudokuCorrect()){
-					throw new SudokuException("Sudoku is not Correct after markAsUniqueGuessAndDetermine number : " +number+", group : "+group );
+					console.error("Sudoku is not Correct after markAsUniqueGuessAndDetermine number : " +number+", group : "+group );
 				}
 			};
 		}
@@ -336,7 +311,7 @@
 						cell.setValue(number);
 						cell.setColor(BLUE);
 						group.sudoku.setSudokuHasChanged(true);
-						InternalHowManyCellsLeft = InternalHowManyCellsLeft - 1;
+						group.sudoku.howManyCellsLeft = group.sudoku.howManyCellsLeft - 1;
 						break;
 					};
 				}

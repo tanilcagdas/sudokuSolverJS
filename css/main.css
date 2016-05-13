@@ -137,6 +137,31 @@ footer {
         /* increases the carousel height so it looks good on phones */
     }
 }
+
+
+
+
+.grp0 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp2 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp4 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp6 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+.grp8 {
+    background-color: var(--my-color);
+    color: var(--my-color2);
+}
+
 .cell {
     margin: auto ;
     width: 2em;
@@ -169,28 +194,5 @@ footer {
 .button-div{
     width: %100;
     text-align:center;
-}
-
-
-
-.grp0 {
-    background-color: var(--my-color);
-    color: var(--my-color2);
-}
-.grp2 {
-    background-color: var(--my-color);
-    color: var(--my-color2);
-}
-.grp4 {
-    background-color: var(--my-color);
-    color: var(--my-color2);
-}
-.grp6 {
-    background-color: var(--my-color);
-    color: var(--my-color2);
-}
-.grp8 {
-    background-color: var(--my-color);
-    color: var(--my-color2);
 }
 
